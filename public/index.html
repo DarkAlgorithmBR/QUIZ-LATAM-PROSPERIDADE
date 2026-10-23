@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prueba de la Prosperidad</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,600;1,700;1,800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+  
+  <!-- Otimizações de Carregamento para o VTurb -->
+  <link rel="preload" href="https://scripts.converteai.net/5969fc19-f452-49b5-bdc2-c801ca778b5e/players/6adbafd658d713890625e539/v4/player.js" as="script">
+  <link rel="preload" href="https://cdn.converteai.net/lib/js/smartplayer/v4/smartplayer.min.js" as="script">
+  <link rel="dns-prefetch" href="https://cdn.converteai.net">
+  <link rel="dns-prefetch" href="https://scripts.converteai.net">
+  <link rel="dns-prefetch" href="https://images.converteai.net">
+  <link rel="dns-prefetch" href="https://api.vturb.com.br">
+
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="page-wrapper">
+
+    <!-- Topbar: Botão Voltar + Barra de Progresso -->
+    <header class="quiz-topbar" id="quiz-topbar">
+      <button type="button" class="back-btn" id="back-btn" onclick="goBack()" aria-label="Volver" style="visibility: hidden;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e0e0e0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+      </button>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width: 10%;"></div>
+      </div>
+      <span class="progress-pct-label" id="progress-pct-label" style="display: none;">100%</span>
+    </header>
+
+    <main class="quiz-container">
+      
+      <!-- ETAPA 1 (PT1): Género -->
+      <section class="quiz-step active" id="step-1">
+        <header class="step-header">
+          <h1 class="main-title">
+            ¡Felicidades! Ya tienes acceso a la prueba del <span class="highlight-badge">la<br class="mobile-break"> prosperidad</span>
+          </h1>
+          <p class="subtitle">Las palabras necesitan saber: tú eres...</p>
+        </header>
+
+        <div class="options-grid">
+          <!-- Opción Hombre -->
+          <button type="button" class="option-card" data-gender="hombre" onclick="selectGender('hombre')">
+            <div class="card-media">
+              <img src="assets/images/hombre.png" alt="Hombre" loading="eager">
+              <span class="card-label">Hombre</span>
+            </div>
+          </button>
+
+          <!-- Opción Mujer -->
+          <button type="button" class="option-card" data-gender="mujer" onclick="selectGender('mujer')">
+            <div class="card-media">
+              <img src="assets/images/mujer.png" alt="Mujer" loading="eager">
+              <span class="card-label">Mujer</span>
+            </div>
+          </button>
+        </div>
+      </section>
+
+      <!-- ETAPA 2 (PT2): Edad -->
+      <section class="quiz-step" id="step-2" style="display: none;">
+        <header class="step-header">
+          <h2 class="question-title">¿Cuál es tu edad?</h2>
+        </header>
+
+        <div class="options-list">
+          <button type="button" class="list-btn" onclick="selectAnswer('edad', '18-24')">
+            <span class="btn-text">18–24</span>
+          </button>
+          <button type="button" class="list-btn" onclick="selectAnswer('edad', '25-34')">
+            <span class="btn-text">25–34</span>
+          </button>
+          <button type="button" class="list-btn" onclick="selectAnswer('edad', '35-44')">
+            <span class="btn-text">35–44</span>
+          </button>
+          <button type="button" class="list-btn" onclick="selectAnswer('edad', '45+')">
+            <span class="btn-text">45+</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ETAPA 3 (PT3): Dinero y reacción inmediata -->
+      <section class="quiz-step" id="step-3" style="display: none;">
+        <header class="step-header">
+          <h2 class="question-title">Cuando el dinero entra en tu vida, ¿qué sucede inmediatamente después?</h2>
+        </header>
+
+        <div class="options-list">
+          <button type="button" class="list-btn" onclick="selectAnswer('reaccion_dinero', 'prueba_gasto_inesperado')">
+            <span class="btn-icon">📖</span>
+            <span class="btn-text">Siempre aparece una prueba o un gasto inesperado</span>
+          </button>
+          <button type="button" class="list-btn" onclick="selectAnswer('reaccion_dinero', 'desaparece_sin_entender')">
+            <span class="btn-icon">🕯️</span>
+            <span class="btn-text">Desaparece sin que logre entender cómo</span>
+          </button>
+          <button type="button" class="list-btn" onclick="selectAnswer('reaccion_dinero', 'miedo_usarlo')">
+            <span class="btn-icon">🤲</span>
+            <span class="btn-text">Permanece intacto, pero siento miedo de usarlo</span>
+          </button>
+          <button type="button" class="list-btn" onclick="selectAnswer('reaccion_dinero', 'se_multiplica')">
+            <span class="btn-icon">🙏</span>
+            <span class="btn-text">Se multiplica de manera natural y armoniosa</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ETAPA 4 (PT4): Ley de la Atracción -->
+      <section class="quiz-step" id="step-4" style="display: none;">
+        <header class="step-header">
+          <h2 class="question-title">¿Ya intentaste la Ley de la Atracción, el pensamiento positivo o la manifestación?</h2>
+        </header>
+
+        <div class="options-list">
+          <button type="button" class="list-btn" onclick="selectAnswer('ley_atraccion', 'nunca_funciono')">
+            <span class="btn-text">Sí, varias veces y NUNCA funcionó bien</span>
+          </button>
+          <button type="button" class="list-btn" onclick="selectAnswer('ley_atraccion', 'resultados_temporales')">
+            <span class="btn-text">Lo intenté, pero los resultados fueron temporales</span>
+          </button>
+          <button type="button" class="list-btn" onclick="selectAnswer('ley_atraccion', 'nunca_intente_seriamente')">
+            <span class="btn-text">Nunca lo intenté seriamente</span>
+          </button>
+          <button type="button" class="list-btn" onclick="selectAnswer('ley_atraccion', 'funciono_perfectamente')">
+            <span class="btn-text">Funcionó perfectamente para mí</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ETAPA 5 (PT5): Pregunta reflexiva (trabaja menos) -->
+      <section class="quiz-step" id="step-5" style="display: none;">
+        <header class="step-header">
+          <h2 class="question-title">
+            ¿Alguna vez te has preguntado:<br>
+            <span class="quote-text">“¿Por qué alguien que trabaja menos tiene más que yo?”</span>
+          </h2>
+        </header>
+
+        <div class="options-list">
+          <button type="button" class="list-btn" onclick="selectAnswer('comparacion_trabajo', 'frustra_profundamente')">
+            <span class="btn-text">Sí, eso me frustra profundamente</span>
+          </button>
+          <button type="button" class="list-btn" onclick="selectAnswer('comparacion_trabajo', 'a_veces')">
+            <span class="btn-text">A veces pienso en eso</span>
+          </button>
+          <button type="button" class="list-btn" onclick="selectAnswer('comparacion_trabajo', 'rara_vez')">
+            <span class="btn-text">Rara vez</span>
+          </button>
+          <button type="button" class="list-btn" onclick="selectAnswer('comparacion_trabajo', 'nunca')">
+            <span class="btn-text">Nunca</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ETAPA 6 (PT6): Pantalla de Conexión / Frecuencias -->
+      <section class="quiz-step" id="step-6" style="display: none;">
+        <header class="step-header">
+          <h2 class="question-title" style="margin-bottom: 24px;">
+            Esa persona probablemente conoce <span class="highlight-badge">frecuencias</span><br>
+            que tú no conoces.
+          </h2>
+        </header>
+
+        <div class="action-container">
+          <button type="button" class="primary-btn" onclick="nextStep()">
+            Seguir
+          </button>
+        </div>
+      </section>
+
+      <!-- ETAPA 7 (PT7): Sentimientos sobre tener mucho dinero -->
+      <section class="quiz-step" id="step-7" style="display: none;">
+        <header class="step-header">
+          <h2 class="question-title">Cuando pienso en tener mucho dinero, yo...</h2>
+        </header>
+
+        <div class="options-list">
+          <button type="button" class="list-btn" onclick="selectAnswer('sentimiento_dinero', 'no_merezco')">
+            <span class="btn-icon">😳</span>
+            <span class="btn-text">Siento que no lo merezco o que no soy capaz</span>
+          </button>
+          <button type="button" class="list-btn" onclick="selectAnswer('sentimiento_dinero', 'ansioso_miedo_perder')">
+            <span class="btn-icon">😰</span>
+            <span class="btn-text">Me pongo ansioso(a) y tengo miedo de perderlo</span>
+          </button>
+          <button type="button" class="list-btn" onclick="selectAnswer('sentimiento_dinero', 'culpable_desearlo')">
+            <span class="btn-icon">😔</span>
+            <span class="btn-text">Me siento culpable por desearlo</span>
+          </button>
+          <button type="button" class="list-btn" onclick="selectAnswer('sentimiento_dinero', 'mio_por_derecho')">
+            <span class="btn-icon">😌</span>
+            <span class="btn-text">Sé que es mío por derecho</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ETAPA 8 (PT8): Bloqueo Principal -->
+      <section class="quiz-step" id="step-8" style="display: none;">
+        <header class="step-header">
+          <h2 class="question-title" style="margin-bottom: 24px; font-weight: 700;">
+            ¡Tu respuesta revela tu <strong style="font-weight: 900;">bloqueo principal!</strong>
+          </h2>
+        </header>
+
+        <div class="action-container">
+          <button type="button" class="primary-btn" onclick="nextStep()">
+            Seguir
+          </button>
+        </div>
+      </section>
+
+      <!-- ETAPA 9 (PT9): Salmo Prohibido -->
+      <section class="quiz-step" id="step-9" style="display: none;">
+        <header class="step-header">
+          <h2 class="question-title">
+            ¿Y si te dijera que una oración del salmo prohibido puede cambiar tu realidad financiera en 40 días? Tú...
+          </h2>
+        </header>
+
+        <div class="options-list">
+          <button type="button" class="list-btn" onclick="selectAnswer('salmo_prohibido', 'intentaria_de_inmediato')">
+            <span class="btn-icon">😅</span>
+            <span class="btn-text">La intentarías de inmediato</span>
+          </button>
+          <button type="button" class="list-btn" onclick="selectAnswer('salmo_prohibido', 'mucha_curiosidad')">
+            <span class="btn-icon">😳</span>
+            <span class="btn-text">Sentirías mucha curiosidad por saber más</span>
+          </button>
+          <button type="button" class="list-btn" onclick="selectAnswer('salmo_prohibido', 'entender_primero')">
+            <span class="btn-icon">✨</span>
+            <span class="btn-text">Necesitarías entender primero cómo funciona</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ETAPA 10 (PT10): Mayor deseo actual -->
+      <section class="quiz-step" id="step-10" style="display: none;">
+        <header class="step-header">
+          <h2 class="question-title">¿Cuál es tu mayor deseo en este momento?</h2>
+        </header>
+
+        <div class="options-list">
+          <button type="button" class="list-btn" onclick="selectAnswer('mayor_deseo', 'pagar_deudas')">
+            <span class="btn-text">Pagar todas mis deudas</span>
+          </button>
+          <button type="button" class="list-btn" onclick="selectAnswer('mayor_deseo', 'fondo_emergencia')">
+            <span class="btn-text">Tener un fondo de emergencia</span>
+          </button>
+          <button type="button" class="list-btn" onclick="selectAnswer('mayor_deseo', 'libertad_financiera')">
+            <span class="btn-text">Alcanzar la libertad financiera</span>
+          </button>
+          <button type="button" class="list-btn" onclick="selectAnswer('mayor_deseo', 'ayudar_familia')">
+            <span class="btn-text">Ayudar a mi familia</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ETAPA 11 (PT11): Deseo específico ajustado -->
+      <section class="quiz-step" id="step-11" style="display: none;">
+        <header class="step-header">
+          <h2 class="question-title" style="margin-bottom: 24px;">
+            Las palabras se ajustan a tu deseo específico...
+          </h2>
+        </header>
+
+        <div class="action-container">
+          <button type="button" class="primary-btn" onclick="nextStep()">
+            Seguir
+          </button>
+        </div>
+      </section>
+
+      <!-- ETAPA 12 (PT12): Selección Múltiple - Manifestación -->
+      <section class="quiz-step" id="step-12" style="display: none;">
+        <header class="step-header" style="margin-bottom: 14px;">
+          <h2 class="question-title" style="margin-bottom: 4px;">
+            Marca lo que más deseas manifestar en los próximos 30 días:
+          </h2>
+          <p class="multi-hint">(Selección múltiple)</p>
+        </header>
+
+        <div class="checkbox-grid">
+          <label class="checkbox-card">
+            <input type="checkbox" name="deseos" value="abundancia_financiera" onchange="toggleCheckbox(this)">
+            <span class="custom-checkbox"><span class="check-icon">✓</span></span>
+            <span class="card-text">Abundancia financiera</span>
+          </label>
+
+          <label class="checkbox-card">
+            <input type="checkbox" name="deseos" value="paz_interior" onchange="toggleCheckbox(this)">
+            <span class="custom-checkbox"><span class="check-icon">✓</span></span>
+            <span class="card-text">Paz interior</span>
+          </label>
+
+          <label class="checkbox-card">
+            <input type="checkbox" name="deseos" value="alegria" onchange="toggleCheckbox(this)">
+            <span class="custom-checkbox"><span class="check-icon">✓</span></span>
+            <span class="card-text">Alegría</span>
+          </label>
+
+          <label class="checkbox-card">
+            <input type="checkbox" name="deseos" value="motivacion" onchange="toggleCheckbox(this)">
+            <span class="custom-checkbox"><span class="check-icon">✓</span></span>
+            <span class="card-text">Motivación</span>
+          </label>
+
+          <label class="checkbox-card">
+            <input type="checkbox" name="deseos" value="confianza" onchange="toggleCheckbox(this)">
+            <span class="custom-checkbox"><span class="check-icon">✓</span></span>
+            <span class="card-text">Confianza</span>
+          </label>
+
+          <label class="checkbox-card">
+            <input type="checkbox" name="deseos" value="relaciones_saludables" onchange="toggleCheckbox(this)">
+            <span class="custom-checkbox"><span class="check-icon">✓</span></span>
+            <span class="card-text">Relaciones saludables</span>
+          </label>
+
+          <label class="checkbox-card">
+            <input type="checkbox" name="deseos" value="proposito" onchange="toggleCheckbox(this)">
+            <span class="custom-checkbox"><span class="check-icon">✓</span></span>
+            <span class="card-text">Propósito</span>
+          </label>
+
+          <label class="checkbox-card">
+            <input type="checkbox" name="deseos" value="gratitud" onchange="toggleCheckbox(this)">
+            <span class="custom-checkbox"><span class="check-icon">✓</span></span>
+            <span class="card-text">Gratitud</span>
+          </label>
+
+          <label class="checkbox-card">
+            <input type="checkbox" name="deseos" value="claridad_mental" onchange="toggleCheckbox(this)">
+            <span class="custom-checkbox"><span class="check-icon">✓</span></span>
+            <span class="card-text">Claridad mental</span>
+          </label>
+
+          <label class="checkbox-card">
+            <input type="checkbox" name="deseos" value="pensamientos_positivos" onchange="toggleCheckbox(this)">
+            <span class="custom-checkbox"><span class="check-icon">✓</span></span>
+            <span class="card-text">Pensamientos positivos</span>
+          </label>
+
+          <label class="checkbox-card">
+            <input type="checkbox" name="deseos" value="salud_fisica" onchange="toggleCheckbox(this)">
+            <span class="custom-checkbox"><span class="check-icon">✓</span></span>
+            <span class="card-text">Salud física</span>
+          </label>
+
+          <label class="checkbox-card">
+            <input type="checkbox" name="deseos" value="enfoque" onchange="toggleCheckbox(this)">
+            <span class="custom-checkbox"><span class="check-icon">✓</span></span>
+            <span class="card-text">Enfoque</span>
+          </label>
+
+          <label class="checkbox-card">
+            <input type="checkbox" name="deseos" value="evolucion_personal" onchange="toggleCheckbox(this)">
+            <span class="custom-checkbox"><span class="check-icon">✓</span></span>
+            <span class="card-text">Evolución personal</span>
+          </label>
+
+          <label class="checkbox-card">
+            <input type="checkbox" name="deseos" value="productividad" onchange="toggleCheckbox(this)">
+            <span class="custom-checkbox"><span class="check-icon">✓</span></span>
+            <span class="card-text">Productividad</span>
+          </label>
+
+          <label class="checkbox-card">
+            <input type="checkbox" name="deseos" value="manifestacion_deseos" onchange="toggleCheckbox(this)">
+            <span class="custom-checkbox"><span class="check-icon">✓</span></span>
+            <span class="card-text">Manifestación de deseos</span>
+          </label>
+
+          <label class="checkbox-card">
+            <input type="checkbox" name="deseos" value="paciencia" onchange="toggleCheckbox(this)">
+            <span class="custom-checkbox"><span class="check-icon">✓</span></span>
+            <span class="card-text">Paciencia</span>
+          </label>
+        </div>
+
+        <div class="action-container" style="margin-top: 14px;">
+          <button type="button" class="primary-btn" onclick="saveMultipleAndNext()">
+            Seguir
+          </button>
+        </div>
+      </section>
+
+      <!-- ETAPA 13 (PT13): Aviso Ético & Compromiso -->
+      <section class="quiz-step" id="step-13" style="display: none;">
+        <header class="step-header">
+          <p class="warning-notice">
+            Aviso: las palabras tienen conciencia propia;<br class="desktop-break">
+            pueden volverse contra quien las utiliza con mala<br class="desktop-break">
+            intención.
+          </p>
+          <h2 class="question-title">
+            ¿Te comprometes a usar este poder únicamente<br class="desktop-break">
+            con propósitos nobles?
+          </h2>
+        </header>
+
+        <div class="options-list">
+          <button type="button" class="list-btn" onclick="selectAnswer('compromiso_etico', 'si_me_comprometo')">
+            <span class="btn-icon">🙏</span>
+            <span class="btn-text">Sí, me comprometo completamente</span>
+          </button>
+          <button type="button" class="list-btn" onclick="selectAnswer('compromiso_etico', 'no_garantizo')">
+            <span class="btn-icon">🤲</span>
+            <span class="btn-text">No puedo garantizarlo</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ETAPA 14 (PT14): Botón Desbloquear Abundancia -->
+      <section class="quiz-step" id="step-14" style="display: none;">
+        <div class="action-container" style="margin-top: 0;">
+          <button type="button" class="primary-btn unlock-btn" onclick="goToStep('vsl')">
+            <span class="btn-icon">👉</span>
+            <span class="btn-text" style="font-size: 17px; font-weight: 800;">Quiero Desbloquear la Abundancia</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ETAPA FINAL: Mini VSL VTurb (Formato Vertical 9:16) -->
+      <section class="quiz-step" id="step-vsl" style="display: none;">
+        
+        <!-- Player Oficial VTurb (Vídeo Vertical montado sob demanda ao chegar nesta etapa) -->
+        <div class="vturb-vertical-wrapper" id="vturb-wrapper">
+          <!-- O player será injetado pelo JavaScript apenas ao chegar nesta etapa -->
+        </div>
+
+        <!-- ========================================================== -->
+        <!-- 🔘 BOTÃO DE CTA DA ÚLTIMA ETAPA: "ACCEDER A MI SALMO"      -->
+        <!-- Salvo para você ativar quando quiser.                       -->
+        <!-- Se você configurar o botão nativo no próprio VTurb,       -->
+        <!-- mantenha com style="display: none;".                      -->
+        <!-- Para ativar este botão, mude para style="display: block;"  -->
+        <!-- ou chame setupVturbDelay(segundos) no quiz.js.             -->
+        <!-- ========================================================== -->
+        <div class="vsl-cta-container" id="vsl-cta" style="display: none;">
+          <a href="#" class="vsl-cta-btn green-btn" id="vsl-cta-link" target="_blank" rel="noopener noreferrer">
+            ACCEDER A MI SALMO
+          </a>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- Footer Copyright -->
+    <footer class="quiz-footer">
+      <p>© La Prueba de la Prosperidad Oculta</p>
+    </footer>
+
+  </div>
+
+  <script src="assets/quiz.js"></script>
+</body>
+</html>

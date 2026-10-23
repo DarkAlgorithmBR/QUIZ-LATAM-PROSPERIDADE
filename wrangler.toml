@@ -2,4 +2,4 @@ name = "quiz-latam-prosperidade"
 compatibility_date = "2024-04-03"
 
 [assets]
-directory = "."
+directory = "./public"
