@@ -539,8 +539,24 @@ body {
   margin: 4px auto 0 auto;
   border-radius: 14px;
   overflow: hidden;
-  background-color: #000000;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+  background-color: #371c09 !important;
+  background: #371c09 !important;
+  box-shadow: none !important;
+}
+
+vturb-smartplayer {
+  background-color: #371c09 !important;
+  background: #371c09 !important;
+}
+
+/* Força a área do botão/CTA do VTurb a ter exatamente o fundo marrom da página */
+vturb-smartplayer div:not(.vturb-player-placeholder):not([style*="padding"]),
+vturb-smartplayer [class*="cta"],
+vturb-smartplayer [class*="action"],
+vturb-smartplayer [class*="footer"],
+vturb-smartplayer [class*="button-container"] {
+  background-color: #371c09 !important;
+  background: #371c09 !important;
 }
 
 .vturb-vertical-box {
@@ -550,7 +566,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at center, #2e1606 0%, #0d0401 100%);
+  background-color: #371c09 !important;
 }
 
 .vturb-vertical-box iframe {

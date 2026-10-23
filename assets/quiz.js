@@ -209,7 +209,7 @@ function loadVturbPlayer() {
 
   // Injeta o elemento HTML do smartplayer
   wrapper.innerHTML = `
-    <vturb-smartplayer id="vid-6adbafd658d713890625e539" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;">
+    <vturb-smartplayer id="vid-6adbafd658d713890625e539" style="display: block; margin: 0 auto; width: 100%; max-width: 400px; background-color: #371c09 !important;">
       <div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 178.21782178217822% 0 0; z-index: 0; background-color: black;"></div>
     </vturb-smartplayer>
   `;
@@ -219,6 +219,27 @@ function loadVturbPlayer() {
   s.src = "https://scripts.converteai.net/5969fc19-f452-49b5-bdc2-c801ca778b5e/players/6adbafd658d713890625e539/v4/player.js";
   s.async = true;
   document.head.appendChild(s);
+
+  // Monitora e substitui qualquer fundo preto do container do botão pelo marrom da página
+  const observer = new MutationObserver(() => {
+    const player = document.querySelector('vturb-smartplayer');
+    if (!player) return;
+
+    player.style.setProperty('background-color', '#371c09', 'important');
+    const divs = player.querySelectorAll('div, footer, section');
+    divs.forEach(el => {
+      // Não altera a caixa do vídeo enquanto carrega
+      if (!el.querySelector('video') && !el.classList.contains('vturb-player-placeholder') && !el.style.padding.includes('%')) {
+        const bg = window.getComputedStyle(el).backgroundColor;
+        if (bg === 'rgb(0, 0, 0)' || bg === 'black' || el.style.backgroundColor === 'black') {
+          el.style.setProperty('background-color', '#371c09', 'important');
+          el.style.setProperty('background', '#371c09', 'important');
+        }
+      }
+    });
+  });
+
+  observer.observe(wrapper, { childList: true, subtree: true, attributes: true, attributeFilter: ['style', 'class'] });
 }
 
 /**
